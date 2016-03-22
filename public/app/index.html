@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>AngularJS & Socket.IO</title>
+    <link href="/lib/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/lib/bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <script src="/lib/angularjs/angular.js"></script>
+    <script src="/lib/angularjs/angular-route.js"></script>
+    <script src="/lib/angularjs/angular-resource.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/app/app.js"></script>
+    <script src="/app/controllers/authctrl.js"></script>
+    <script src="/app/controllers/mainctrl.js"></script>
+    <script src="/app/controllers/view1ctrl.js"></script>
+    <script src="/app/controllers/view2ctrl.js"></script>
+    <script src="/app/controllers/view3ctrl.js"></script>
+    <script src="/app/controllers/view4ctrl.js"></script>
+    <script src="/app/controllers/view5ctrl.js"></script>
+</head>
+<body ng-controller="topCtrl">
+    <ng-view />
+</body>
+</html>
