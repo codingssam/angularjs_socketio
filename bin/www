@@ -6,6 +6,8 @@ var http = require("http");
 var https = require("https");
 var fs = require("fs");
 var path = require("path");
+var logger = require('../config/winstonconfig');
+var TAG = "[express]";
 
 var httpPort = normalizePort(process.env.HTTP_PORT || "80");
 app.set("httpPort", httpPort);
@@ -90,3 +92,9 @@ function onListening() {
         : ((this === server) ? "httpPort ": "httpsPort ") + addr.port;
     debug("Listening on " + bind);
 }
+
+process.on('uncaughtException', function(err) {
+  logger.log('error', '%s ', TAG, err.message);
+  logger.log('error', '%s ', TAG, err.statck);
+  process.exit(1);
+});

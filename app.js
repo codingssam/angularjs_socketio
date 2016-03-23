@@ -5,9 +5,17 @@ var morgan = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var session = require("express-session");
+var redis = require('redis');
+var RedisStore = require('connect-redis')(session);
 var passport = require("passport");
 var logger = require("./config/winstonconfig");
 var io = require("socket.io");
+
+var sessionStore = new RedisStore({
+  host: 'localhost',
+  port: 6379,
+  client: redis.createClient()
+});
 
 var app = express();
 app.io = io();
@@ -15,7 +23,7 @@ app.io = io();
 var index = require("./routes");
 
 require("./config/passportconfig")(passport);
-require("./sockets")(app.io);
+require("./sockets")(app.io, cookieParser, sessionStore);
 
 // view engine setup
 //app.set("views", path.join(__dirname, "views"));
@@ -27,10 +35,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-  "secret": process.env.SESSION_SECRET,
-  "cookie": { "maxAge": parseInt(process.env.COOKIE_MAXAGE) },
-  "resave": true,
-  "saveUninitialized": true
+  store: sessionStore,
+  name: "myapp.sid",
+  secret: process.env.SESSION_SECRET,
+  cookie: { "maxAge": parseInt(process.env.COOKIE_MAXAGE) },
+  resave: false,
+  saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());

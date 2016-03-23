@@ -9,8 +9,6 @@ var TAG = "[express]";
 router.get("/", function(req, res, next) {
 	if (req.secure) {
 		var filePath = path.join(__dirname, "..", "public/app/index.html");
-		logger.log("debug", "%s %s %s => %s", TAG, req.method, req.url, filePath);
-
 		var reader = fs.createReadStream(filePath);
 		reader.pipe(res);
 	} else {
@@ -21,8 +19,8 @@ router.get("/", function(req, res, next) {
 });
 
 router.post("/login", function(req, res, next) {
-	logger.log("debug", "%s secure: ", TAG, req.secure);
-	logger.log("debug", "%s %s %s", TAG, req.method, req.url);
+	logger.log("debug", "%s req.secure: ", TAG, req.secure);
+	logger.log("debug", "%s req.method: %s req.url: %s ", TAG, req.method, req.url);
 	logger.log("debug", "%s req.body: ", TAG, req.body);
 	if (req.secure) {
 		passport.authenticate("local-login", function(err, user) {
@@ -38,7 +36,7 @@ router.post("/login", function(req, res, next) {
 						console.log(err);
 						next(err);
 					} else {
-						logger.log("debug", "%s ", TAG, req.user);
+						logger.log("debug", "%s req.login()... ", TAG, req.user);
 						res.json({
 							"message": "Login Success"
 						});
@@ -56,9 +54,9 @@ router.post("/login", function(req, res, next) {
 router.post("/logout", function(req, res, next) {
 	if (req.secure) {
 		req.logout();
-		logger.log("debug", "%s secure: ", TAG, req.secure);
-		logger.log("debug", "%s %s %s", TAG, req.method, req.url);
-		logger.log("debug", "%s ", TAG, req.user);
+		logger.log("debug", "%s req.secure: ", TAG, req.secure);
+		logger.log("debug", "%s req.method: %s req.url: %s ", TAG, req.method, req.url);
+		logger.log("debug", "%s req.user: ", TAG, req.user);
 		res.json({
 			"message": "Logout Success"
 		});
